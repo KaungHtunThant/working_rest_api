@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('/employees')->group( function(){
     // Route::apiResource("/video",'\App\Http\Controllers\EmployeesController@show');
     Route::post('add', '\App\Http\Controllers\EmployeesController@store');
-    Route::get('view', '\App\Http\Controllers\EmployeesController@show');
-    // Route::get('view', 'EmployeesController@show');
-    Route::patch('update', 'EmployeesController@update');
-    Route::delete('delete', 'EmployeesController@destroy');
+    Route::get('/', '\App\Http\Controllers\EmployeesController@show');
+    Route::get('{employee}', '\App\Http\Controllers\EmployeesController@showDetail');
+    Route::patch('update/{employee}', '\App\Http\Controllers\EmployeesController@update');
+    Route::delete('delete/{employee}', '\App\Http\Controllers\EmployeesController@destroy');
 });

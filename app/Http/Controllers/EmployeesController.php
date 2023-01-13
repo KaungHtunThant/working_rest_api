@@ -7,33 +7,17 @@ use App\Models\Employees;
 
 class EmployeesController extends Controller
 {
-    public function store(Request $request){
-        $empID = $request->input('empID');
-        $empName = $request->input('empName');
-        $empAge = $request->input('empAge');
+    protected function validateRequest(){
+        return request()->validate([
+                'empID' => 'required',
+                'empName' => 'required',
+                'empAge' => 'required'
+            ]);
+    }
 
-        $data = array(
-            'empID' => $empID, 
-            'empName' => $empName,
-            'empAge' => $empAge
-        );
+    public function store(){
 
-        $result = Employees::create($data);
-        if ($result){
-            return response()->json([
-                'type' => 'Employees',
-                'message' => 'Success',
-                'empID' => $result->empID,
-                'attributes' => $result
-            ], 201);
-        }
-        else{
-            return response()->json([
-                'type' => 'Employees',
-                'message' => 'Fail',
-                'attributes' => $result
-            ], 400);
-        }
+        Employees::create($this->validateRequest());
     }
 
     public function show(){
@@ -42,5 +26,22 @@ class EmployeesController extends Controller
         return response()->json([
             'data' => $result
         ], 200);
+    }
+
+    public function showDetail(Employees $employee){
+
+        return response()->json([
+            'data' => $employee
+        ], 200);
+    }
+
+    public function update(Employees $employee){
+
+        $employee->update($this->validateRequest());
+    }
+
+    public function destroy(Employees $employee){
+
+        $employee->delete();
     }
 }
